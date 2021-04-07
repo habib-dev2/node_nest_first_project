@@ -24,7 +24,7 @@ export class UserService {
   }
 
   //Get All User Data
-  async getuserList() {
+  async getuserList(user) {
     try {
       return await this.userModel.find();
     } catch (error) {

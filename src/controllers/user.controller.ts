@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { UserService } from 'src/services/user.service';
 
 @Controller('/api')
@@ -6,8 +6,8 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('/users')
-  getuserList() {
-    return this.userService.getuserList();
+  getuserList(@Req() req) {
+    return this.userService.getuserList(req['user']);
   }
 
   @Post('/add-user')
