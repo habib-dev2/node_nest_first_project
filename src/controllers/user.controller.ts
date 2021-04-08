@@ -1,11 +1,11 @@
 import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { UserService } from 'src/services/user.service';
 
-@Controller('/api')
+@Controller('/api/users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get('/users')
+  @Get('/getAllUsers')
   getuserList(@Req() req) {
     return this.userService.getuserList(req['user']);
   }

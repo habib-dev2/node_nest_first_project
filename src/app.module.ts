@@ -13,6 +13,7 @@ import { Blog, BlogSchema } from './blog/blog.schema';
 import { AuthService } from './services/authService';
 import { AuthController } from './controllers/authController';
 import { AuthMiddleware } from './middlewares/auth.middleware';
+import { BlogController } from './blog/blog.controller';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { AuthMiddleware } from './middlewares/auth.middleware';
     AppController,
     UserController,
     AuthController,
+    BlogController,
   ],
   providers: [
     CommentService,
@@ -43,6 +45,6 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .forRoutes({ path: '/api/*', method: RequestMethod.ALL });
+      .forRoutes({ path: '/api/users/*', method: RequestMethod.ALL });
   }
 }

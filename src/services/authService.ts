@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/schemas/user.schema';
@@ -12,6 +12,34 @@ export class AuthService {
   //Add user
   async login(body) {
     try {
+      const user = await this.userModel
+        .find({
+          email: body['email'],
+          password: body['password'],
+        })
+        .limit(1);
+
+      if (user.length > 0) {
+        const payload = {
+          _id: user[0]._id,
+          name: user[0].name,
+          email: user[0].email,
+        };
+
+        const token = JWT.sign(payload, 'giftyKey', {
+          expiresIn: '6m',
+        });
+        return {
+          message: 'Register successfully',
+          token: token,
+          status: HttpStatus.OK,
+        };
+      } else {
+        return {
+          message: 'Email and password wrong',
+          status: HttpStatus.UNAUTHORIZED,
+        };
+      }
     } catch (error) {
       console.log(error);
     }
@@ -37,7 +65,7 @@ export class AuthService {
       };
 
       const token = JWT.sign(payload, 'giftyKey', {
-        expiresIn: '50m',
+        expiresIn: '6m',
       });
 
       return { message: 'Register successfully', token: token };
